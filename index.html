@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>abdullah-bıyık-odev2-carousel-5puan</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" rel="stylesheet"
+		crossorigin="anonymous">
+
+	<style>
+		/*======================================
+		=            NO GUTTER CODE            =
+		======================================*/
+		.no-gutter>[class*='col-'] {
+			padding-right: 0;
+			padding-left: 0;
+		}
+
+		/*======================================
+		=            NO GUTTER CODE            =
+		======================================*/
+
+		#right_arrow {
+			margin-right: 10px;
+		}
+
+		#left_arrow {
+			margin-right: 10px;
+		}
+
+		.uplink {
+			text-decoration: none;
+			font-family: 'Courier New', Courier, monospace;
+			font-size: 30px;
+			color: rgb(31, 16, 16);
+			line-height: 52px;
+			margin-right: 12px;
+		}
+
+		#ab_selector {
+			margin-top: 60px;
+			margin-bottom: 10px;
+		}
+
+
+		#content_root {
+			background-color: bisque;
+			height: 400px;
+			width: 600px;
+		}
+
+		#ab_photos {
+			padding-top: 12px;
+			padding-bottom: 12px;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<div class="container">
+
+		<!-- flex start -->
+		<div class="d-flex justify-content-center">
+			<div class="p-2">
+				Time: <p style="display: inline;" id="time_zone"></p>
+			</div>
+			<div class="p-2">
+				Puan: <p style="display: inline;" id="puan"></p>
+			</div>
+
+		</div>
+
+		<!-- row start -->
+		<div class="d-flex justify-content-center" id="ab_selector">
+
+			<div id="left_arrow"><a href="#"><i class="bi bi-arrow-bar-left fs-2 mb-3"></i></a></div>
+			<div class="d-flex justify-content-center" id="link_storage">
+				<!-- link1 -->
+				<!-- <a href="#" class="uplink" style="">1</a> -->
+				<!-- . -->
+				<!-- New links here.. -->
+				<!-- . -->
+				<!-- . -->
+
+			</div>
+			<div id="right_arrow"><a href="#"><i class="bi bi-arrow-bar-right fs-2 mb-3"></i></a></div>
+
+		</div>
+		<!-- row end -->
+
+		<!-- row start -->
+		<div class="d-flex justify-content-center">
+			<div class="row">
+				<div class="col-12 border rounded-3	 bg-light bg-gradient" id="ab_photos">
+
+					<!-- Content ROOT start. -->
+					<div id="content_root" src="#" alt="">
+						<div id="divQuestion" class="border rounded-3"></div>
+						<div id="divQuestionStates" class="border rounded-3"></div>
+
+					</div>
+					<!-- Content ROOT end. -->
+
+				</div>
+			</div>
+		</div>
+		<!-- row end -->
+
+
+		<!-- row start -->
+		<div class="d-flex justify-content-center">
+			<div class="row" id="ab_photo_details">
+				<p id="img_detail"></p>
+
+			</div>
+		</div>
+		<!-- row end -->
+
+		<!-- row start -->
+		<div class="d-flex justify-content-center">
+
+
+			<div class="col-2">
+
+				<input id="yeniSoruBaslik" class="" type="text" placeholder="Yeni soruyu yazınız..">
+				<input id="yeniSoruTipi" class="mt-1" type="text" placeholder="Soru tipi: 'WORD' ya da 'abcde'">
+				<input id="yeniSoruStates" class="mt-1" type="text"
+					placeholder="'elma,armut,muz,kiraz,karpuz' ya da ''">
+				<input id="yeniSoruCevap" class="mt-1" type="text" placeholder="cevap ne olacak.">
+				<button id="yeniSoruBtn" style="width: 60px;color: white; padding-bottom: 4px; padding-top: 3px;"
+					class="mt-1 bg-dark border border-1 rounded-2">Add</button>
+			</div>
+
+
+			<div class="col-2">
+				<input id="guncelleSoruIota" class="" type="text" placeholder="ID..1,2,3..">
+				<input id="guncelleSoruBaslik" class="" type="text" placeholder="Yeni soruyu yazınız..">
+				<input id="guncelleSoruTipi" class="mt-1" type="text" placeholder="Soru tipi: 'WORD' ya da 'abcde'">
+				<input id="guncelleSoruStates" class="mt-1" type="text"
+					placeholder="'elma,armut,muz,kiraz,karpuz' ya da ''">
+				<input id="guncelleSoruCevap" class="mt-1" type="text" placeholder="cevap ne olacak.">
+				<button id="guncelleSoruBtn" style="width: 60px;color: white; padding-bottom: 4px; padding-top: 3px;"
+					class="mt-1 bg-dark border border-1 rounded-2">Set</button>
+			</div>
+
+
+		</div>
+
+		<!-- row end -->
+
+
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+		crossorigin="anonymous"></script>
+
+
+	<!-- TIME ZONE -->
+	<script>
+		const time_zone = document.getElementById("time_zone");
+
+		var timeProxy;
+		var inf;
+
+		const handler = {
+			get(target, prop, receiver) {
+				if (prop === "nil") {
+					return "nil";
+				} else {
+
+					let a;
+					a = parseInt(target.time.t);
+					--a;
+					target.time.t = a;
+					// console.log(a);
+					localStorage.setItem("timeZone", a);
+					let padSec = "";
+					let padMin = "";
+					if (a % 60 < 10) { padSec = "0"; } else { padSec = ""; }
+					if (Math.floor((a / 60)) < 10) { padMin = "0"; } else { padMin = ""; }
+					let showTimeZone = padMin + Math.floor((a / 60)) + ":" + padSec + (a % 60);
+
+					if (a <= 0) {
+						showTimeZone = "-- : --";
+					}
+					localStorage.setItem("timeZone", a);
+					localStorage.setItem("realTime", Date.now());
+					time_zone.innerHTML = showTimeZone;
+					return a;
+				}
+			},
+			set(obj, prop, value) {
+				console.log("@@@obj", obj);
+				console.log("@@@prop", prop);
+				console.log("@@@value", value);
+				if (value.state == "stop_it") {
+
+					obj.time.t = 0;
+					obj.time.state = "stop_it"
+					localStorage.setItem("timeZone", "0");
+				} else if (value.state == "pause_it") {
+					console.log("pause it");
+				}
+				else if (value.state == "resume_it") {
+					console.log("resume it");
+				}
+
+			},
+		};
+
+
+
+
+		window.addEventListener("load", function () {
+			// localStorage.removeItem("timeZone");
+			// localStorage.removeItem("realTime");
+
+			console.log("page loaded.")
+			let timeZone;
+			if (localStorage.getItem("timeZone") !== null && localStorage.getItem("timeZone") !== "" && localStorage.getItem("timeZone") !== undefined) {
+				timeZone = localStorage.getItem("timeZone");
+
+				let oldRealTime = localStorage.getItem("realTime");
+				let nowRealTime = Date.now();
+				let miliseconds = (nowRealTime - parseInt(oldRealTime));
+				var seconds = ((miliseconds % 60000) / 1000).toFixed(0);
+				let leftTime = parseInt(timeZone) - (seconds);
+				timeZone = leftTime;
+			} else {
+				timeZone = 200;
+			}
+
+
+			const target = {
+				time: {
+					t: timeZone,
+					state: "stop_it",
+				},
+			};
+			timeProxy = new Proxy(target, handler);
+
+			runIt = function () {
+				let _ = timeProxy.time.t;
+			}
+
+			inf = setInterval(runIt, 1000);
+
+
+		});
+
+	</script>
+
+
+
+
+
+
+
+	<script>
+
+		var left_arrow = document.getElementById("left_arrow");
+		var right_arrow = document.getElementById("right_arrow");
+		var content_root = document.getElementById("content_root");
+		var puan = document.getElementById("puan");
+
+		var yeniSoruBaslik = document.getElementById("yeniSoruBaslik");
+		var yeniSoruTipi = document.getElementById("yeniSoruTipi");
+		var yeniSoruStates = document.getElementById("yeniSoruStates");
+		var yeniSoruCevap = document.getElementById("yeniSoruCevap");
+		var yeniSoruBtn = document.getElementById("yeniSoruBtn");
+
+
+		var guncelleSoruIota = document.getElementById("guncelleSoruIota");
+		guncelleSoruIota.setAttribute("disabled", "");
+		var guncelleSoruBaslik = document.getElementById("guncelleSoruBaslik");
+		var guncelleSoruTipi = document.getElementById("guncelleSoruTipi");
+		var guncelleSoruStates = document.getElementById("guncelleSoruStates");
+		var guncelleSoruCevap = document.getElementById("guncelleSoruCevap");
+		var guncelleSoruBtn = document.getElementById("guncelleSoruBtn");
+
+		var divQuestion = document.getElementById("divQuestion");
+		var divQuestionStates = document.getElementById("divQuestionStates");
+
+
+
+		guncelleSoruBtn.addEventListener("click", () => {
+			let dataPoint = guncelleSoruIota.value - 1;
+
+			datas[dataPoint].question = guncelleSoruBaslik.value;
+			datas[dataPoint].questionType = guncelleSoruTipi.value;
+
+			let allStates = []
+			if (guncelleSoruStates.value != null) {
+				let currStates = guncelleSoruStates.value.split(",")
+				for (let k = 0; k < currStates.length; k++) {
+					allStates.push(currStates[k]);
+				}
+
+				datas[dataPoint].questionStates = allStates;
+
+			} else {
+				datas[dataPoint].questionStates = null;
+			}
+
+			datas[dataPoint].answer = guncelleSoruCevap.value;
+			datas[dataPoint].node = null;
+			let uplinkId = parseInt(dataPoint) + 1;
+			document.getElementById("uplink" + uplinkId).click();
+			document.getElementById("uplink" + uplinkId).click();
+
+
+		});
+
+
+
+
+		function UpdateFill() {
+			for (let i = 0; i < datas.length; i++) {
+				if (datas[i].active == true) {
+					guncelleSoruIota.value = datas[i].content_iota;
+					guncelleSoruBaslik.value = datas[i].question;
+					guncelleSoruTipi.value = datas[i].questionType;
+					// need if statement for SoruStates -><-
+					guncelleSoruCevap.value = datas[i].answer;
+
+					if (datas[i].questionStates != null) {
+						let sendStates = "";
+						for (let j = 0; j < datas[i].questionStates.length; j++) {
+							sendStates = sendStates + datas[i].questionStates[j] + ",";
+						}
+						// remove last ",".
+						sendStates = sendStates.slice(0, -1);
+						guncelleSoruStates.value = sendStates;
+					} else {
+						guncelleSoruStates.value = "";
+					}
+
+
+
+					break;
+				}
+
+			}
+		}
+
+
+		function CalculatePuan() {
+			let soruPuani = 100 / datas.length;
+			let toplamPuan = 0;
+			for (let i = 0; i < datas.length; i++) {
+				if (datas[i].userAnswer != null) {
+					if (datas[i].userAnswer.toLowerCase() == datas[i].answer.toLowerCase()) {
+						toplamPuan = toplamPuan + soruPuani;
+					}
+				}
+			}
+			puan.innerHTML = parseInt(toplamPuan);
+		}
+
+		function GetDatasFromStorage() {
+			var storageDatas = localStorage.getItem("collectedDatas");
+			let senddatas = JSON.parse(storageDatas);
+			for (let i = 0; i < senddatas.length; i++) {
+				senddatas[i].node = null;
+			}
+			return senddatas;
+		}
+
+		function CopyDatasToStorage() {
+			var collectedDatas = JSON.stringify(datas);
+			localStorage.setItem("collectedDatas", collectedDatas);
+
+			// temporary.
+			UpdateFill();
+
+		}
+
+
+		function checkAnswer(whichQuestionIota) {
+			let color;
+			if (datas[whichQuestionIota - 1].userAnswer != null) {
+
+
+				if (datas[whichQuestionIota - 1].answer.toLowerCase() == datas[whichQuestionIota - 1].userAnswer.toLowerCase()) {
+					color = "green";
+				} else {
+					color = "red";
+				}
+			}
+			content_root.setAttribute("style", "background-color:" + color);
+		}
+
+
+		function handleRadioChange(event) {
+			var selectedOption = event.target.value;
+			let whichQuestionIota = event.target.name.split("questionName")[1];
+
+			// Set user's answer to datas.
+			datas[whichQuestionIota - 1].userAnswer = selectedOption
+			CopyDatasToStorage();
+			checkAnswer(whichQuestionIota);
+			CalculatePuan();
+
+		}
+		function handleTextChange(event) {
+			var selectedOption = event.target.value;
+			let whichQuestionIota = event.target.name.split("questionName")[1];
+
+			// Set user's answer to datas.
+			datas[whichQuestionIota - 1].userAnswer = selectedOption
+			CopyDatasToStorage();
+			checkAnswer(whichQuestionIota);
+			CalculatePuan();
+
+		}
+
+
+		function handleRadiDomLoad(node) {
+			node.checked = true;
+
+			let nodeIota = parseInt(node.name.split("questionName")[1])
+			checkAnswer(nodeIota);
+		}
+
+		function handleTextDomLoad(node) {
+
+			let nodeIota = parseInt(node.name.split("questionName")[1])
+			node.value = datas[nodeIota - 1].userAnswer;
+			checkAnswer(nodeIota);
+		}
+
+		function SetNode(nextState) {
+			content_root.setAttribute("style", "");
+			if (datas[nextState].node == null) {
+				const newNode = CreateQuestionNode(datas[nextState].questionStates, datas[nextState].content_iota);
+				datas[nextState].node = newNode;
+				CopyDatasToStorage();
+			}
+
+			divQuestion.innerHTML = datas[nextState].question;
+			divQuestionStates.innerHTML = "";
+
+			radioChecked = 0;
+			if (datas[nextState].node instanceof Node) {
+				a = datas[nextState].node.cloneNode(true);
+				a.childNodes.forEach(node => {
+
+					if (node instanceof HTMLElement && node.type == "radio") {
+
+						if (datas[nextState].userAnswer != "") {
+
+							if (node.value == datas[nextState].userAnswer) {
+								console.log(node.id);
+								// node.addEventListener("DOMContentLoaded", handleRadiDomLoad("questionId" + k));
+								if (radioChecked == 0) {
+									radioChecked = 1;
+									node.addEventListener("DOMContentLoaded",
+										handleRadiDomLoad(node)
+									);
+								}
+
+							}
+
+
+						}
+
+						node.addEventListener("click", handleRadioChange);
+					} else if (node instanceof HTMLElement && node.type == "text") {
+						node.addEventListener("input", handleTextChange);
+						if (datas[nextState].userAnswer != "") {
+							node.addEventListener("DOMContentLoaded",
+								handleTextDomLoad(node)
+							);
+						}
+					}
+				});
+
+
+				divQuestionStates.appendChild(a);
+			} else {
+				console.log('datas[nextState].node is not a valid Node object');
+			}
+		}
+
+
+		function CreateQuestionNode(questionStates, content_iota) {
+			// Question Type is WORD.
+			if (questionStates == null) {
+				const fragment = document.createDocumentFragment();
+				const text = document.createElement("input");
+				text.type = "text";
+				text.name = "questionName" + content_iota;
+				text.id = "questionId" + 0;
+				text.value = "";
+				text.addEventListener("input", handleTextChange);
+				fragment.appendChild(text);
+				return fragment;
+
+
+
+			} else { // Type is ABCDE.
+
+				const fragment = document.createDocumentFragment();
+
+				for (let i = 0; i < questionStates.length; i++) {
+					const radio = document.createElement("input");
+					radio.type = "radio";
+					radio.name = "questionName" + content_iota;
+					radio.id = "questionId" + i;
+					radio.value = questionStates[i];
+
+					const label = document.createElement("label");
+					label.setAttribute("for", radio.id);
+					label.textContent = questionStates[i];
+					radio.addEventListener("change", handleRadioChange);
+
+					fragment.appendChild(radio);
+					fragment.appendChild(label);
+					fragment.appendChild(document.createElement("br"));
+				}
+
+				return fragment;
+
+
+			}
+
+		}
+
+
+		function AddItemToSlider(objectOfDatas, init) {
+			var newNode = document.createElement("a");
+			if (init == true) {
+				newNode.setAttribute("style", "background-color: green;color: white;");
+			}
+			newNode.setAttribute("href", "#");
+			newNode.setAttribute("class", "uplink");
+			newNode.setAttribute("id", "uplink" + objectOfDatas.content_iota);
+			newNode.innerHTML = objectOfDatas.content_iota;
+			return newNode;
+		}
+
+
+		let datas;
+		if (localStorage.getItem("collectedDatas") !== null && localStorage.getItem("collectedDatas") !== "" && localStorage.getItem("collectedDatas") !== undefined) {
+			console.log("Loaded from storage.");
+			datas = GetDatasFromStorage();
+		} else {
+			console.log("Loaded from base.");
+			datas = [
+				{
+					"content_iota": 1,
+					"question": "Samsun şehri plakası nedir?",
+					"questionType": "abcde",
+					"questionStates": ["55", "22", "39", "41", "53"],
+					"answer": "55",
+					"userAnswer": "",
+					"active": false,
+					"node": null,
+				},
+				{
+					"content_iota": 2,
+					"question": "Türkiyenin başkenti neresidir?",
+					"questionType": "WORD",
+					"questionStates": null,
+					"answer": "Ankara",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 3,
+					"question": "RGB' deki 'R' neyi ifade etmektedir?",
+					"questionType": "abcde",
+					"questionStates": ["Green", "Blue", "White", "Red", "Black"],
+					"answer": "Red",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 4,
+					"question": "Kediler kaç ayaklıdır?",
+					"questionType": "abcde",
+					"questionStates": ["9", "3", "7", "1", "4"],
+					"answer": "4",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 5,
+					"question": "Beş aşağıdakilerden hangisidir.",
+					"questionType": "abcde",
+					"questionStates": ["1", "2", "3", "4", "5"],
+					"answer": "5",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 6,
+					"question": "Hangisi bir çay çeşididir?",
+					"questionType": "abcde",
+					"questionStates": ["yeşil", "kırmızı", "siyah", "beyaz", "gri"],
+					"answer": "yeşil",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 7,
+					"question": "İnsanlar kaç yaşında doğar.",
+					"questionType": "abcde",
+					"questionStates": ["1", "0", "3", "4", "9 aylık"],
+					"answer": "0",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 8,
+					"question": "Gün ne zaman başlar?",
+					"questionType": "abcde",
+					"questionStates": ["öğlen", "akşam", "ikindi", "yatsı", "sabah"],
+					"answer": "yatsı",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 9,
+					"question": "Benim adım nedir?",
+					"questionType": "WORD",
+					"questionStates": null,
+					"answer": "abdullah",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 10,
+					"question": "Bu sayı kaçtır? Sayı->4",
+					"questionType": "WORD",
+					"questionStates": ["beş", "altı", "yedi", "üç", "dört"],
+					"answer": "dört",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 11,
+					"question": "Bu soru kaçıncı sorudur",
+					"questionType": "WORD",
+					"questionStates": ["11", "12", "13", "14", "15"],
+					"answer": "11",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				},
+				{
+					"content_iota": 12,
+					"question": "Bu sorudan önceki soru kaçıncı sorudur",
+					"questionType": "WORD",
+					"questionStates": ["10", "11", "12", "13", "14"],
+					"answer": "10",
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				}
+			];
+
+
+		}
+		var OldState = 0;
+		for (let j = 0; j < datas.length; j++) {
+			if (datas[j].active == true) {
+				OldState = j
+			}
+		}
+
+
+
+		console.log(datas);
+
+		var initFlag = true
+		for (let i = 0; i < datas.length; i++) {
+			if (datas[i].content_iota == 1) {
+				initFlag = true;
+				// content_root.setAttribute("src", datas[i].question)
+				// CopyDatasToStorage();
+
+
+				SetNode(0);
+
+
+
+				datas[i].active = true;
+				CopyDatasToStorage();
+			} else {
+				initFlag = false
+			}
+			let newNode = AddItemToSlider(datas[i], initFlag);
+
+			document.getElementById("link_storage").appendChild(newNode);
+		}
+
+
+		document.getElementById("left_arrow").addEventListener("click", function () {
+			for (let i = 0; i < datas.length; i++) {
+
+
+
+				if (datas[i].active == true) {
+					let active_state_iota = datas[i].content_iota;
+					document.getElementById("uplink" + active_state_iota).setAttribute("style", " ")
+					if (typeof datas[i + 1] == "undefined") {
+					}
+
+
+					let nextState;
+					if (i == 0) {
+						nextState = datas.length - 1;
+						datas[nextState].active = true;
+						CopyDatasToStorage();
+						SetNode(nextState);
+
+					} else {
+						nextState = i - 1;
+						datas[nextState].active = true;
+						CopyDatasToStorage();
+						SetNode(nextState);
+					}
+					datas[i].active = false;
+					CopyDatasToStorage();
+					document.getElementById("uplink" + datas[nextState].content_iota).setAttribute("style", "background-color: green;color: white;")
+					break;
+				} else {
+
+				}
+			}
+		});
+
+		document.getElementById("right_arrow").addEventListener("click", function () {
+			for (let i = 0; i < datas.length; i++) {
+
+				if (datas[i].active == true) {
+					let active_state_iota = datas[i].content_iota;
+					document.getElementById("uplink" + active_state_iota).setAttribute("style", " ")
+
+
+					let nextState;
+					if (i == datas.length - 1) {
+						nextState = 0;
+						datas[0].active = true;
+						CopyDatasToStorage();
+						SetNode(nextState);
+					} else {
+						nextState = i + 1;
+						datas[nextState].active = true;
+						CopyDatasToStorage();
+						SetNode(nextState);
+					}
+					datas[i].active = false;
+					CopyDatasToStorage();
+					document.getElementById("uplink" + datas[nextState].content_iota).setAttribute("style", "background-color: green;color: white;")
+					break;
+				} else {
+
+				}
+			}
+		});
+
+
+
+		var yeniSoruBaslik = document.getElementById("yeniSoruBaslik");
+		var yeniSoruTipi = document.getElementById("yeniSoruTipi");
+
+		document.getElementById("yeniSoruBtn").addEventListener("click", function () {
+
+			if (yeniSoruBaslik.value != "" &&
+				yeniSoruCevap.value != "") {
+
+				var oldDataLen = datas.length
+				oldDataLen++;
+
+				let allStates = []
+				let respondStates;
+				if (yeniSoruStates.value != null && yeniSoruStates.value != "") {
+					let currStates = yeniSoruStates.value.split(",")
+					for (let k = 0; k < currStates.length; k++) {
+						allStates.push(currStates[k]);
+					}
+
+					respondStates = allStates;
+
+				} else {
+					respondStates = null;
+				}
+
+
+				datas[datas.length] = {
+					"content_iota": oldDataLen,
+					"question": yeniSoruBaslik.value,
+					"questionType": yeniSoruTipi.value,
+					"questionStates": respondStates,
+					"answer": yeniSoruCevap.value,
+					"userAnswer": "",
+					"active": false,
+					"node": null
+				};
+
+				CopyDatasToStorage();
+
+
+				let newNode = AddItemToSlider(datas[datas.length - 1], false);
+				document.getElementById("link_storage").appendChild(newNode);
+
+				yeniSoruBaslik.value = "";
+				yeniSoruTipi.value = "";
+				yeniSoruStates.value = "";
+				yeniSoruCevap.value = "";
+				var selectOneLink = datas[datas.length - 1]
+				let links = document.querySelectorAll("#uplink" + selectOneLink.content_iota);
+
+				links.forEach(link => {
+					link.addEventListener('click', event => {
+						event.preventDefault();
+						document.getElementById(event.srcElement.id).setAttribute("style", "background-color: green;color: white;")
+						for (i = 0; i < datas.length; i++) {
+							if (datas[i].active == true) {
+								datas[i].active = false
+								CopyDatasToStorage();
+								document.getElementById("uplink" + datas[i].content_iota).setAttribute("style", "")
+
+								break;
+							}
+						}
+						for (i = 0; i < datas.length; i++) {
+							if (("uplink" + datas[i].content_iota) == event.srcElement.id) {
+
+								datas[i].active = true;
+								CopyDatasToStorage();
+								SetNode(i);
+
+								break;
+							}
+						}
+
+						console.log(event);
+					});
+				});
+			} else {
+				alert("Eklerken (yeniSoruBaslik ve yeniSoruCevap) boş olmamalı.");
+			}
+
+		});
+
+		var links_class = document.getElementsByName("uplink")
+
+
+		const links = document.querySelectorAll('.uplink');
+
+		links.forEach(link => {
+			link.addEventListener('click', event => {
+				event.preventDefault();
+				document.getElementById(event.srcElement.id).setAttribute("style", "background-color: green;color: white;")
+				for (i = 0; i < datas.length; i++) {
+					if (datas[i].active == true) {
+						datas[i].active = false
+						CopyDatasToStorage();
+						document.getElementById("uplink" + datas[i].content_iota).setAttribute("style", "")
+
+						break;
+					}
+				}
+				for (i = 0; i < datas.length; i++) {
+					if (("uplink" + datas[i].content_iota) == event.srcElement.id) {
+
+						datas[i].active = true;
+						CopyDatasToStorage();
+						SetNode(i);
+						break;
+					}
+				}
+
+				console.log(event);
+			});
+		});
+
+
+		let uplinkId = (parseInt(OldState) + 1);
+		if (OldState != 0) {
+			document.getElementById("uplink" + uplinkId).click();
+		}
+		CalculatePuan();
+
+
+
+	</script>
+</body>
+
+</html>
